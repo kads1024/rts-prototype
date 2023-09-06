@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace RTS.General
 {
-    [RequireComponent(typeof(InputHandler))]
+    [RequireComponent(typeof(RTSUnitInputHandler))]
     public class UnitMovement : MonoBehaviour
     {
-        private InputHandler inputHandler;
+        private RTSUnitInputHandler inputHandler;
 
         private void Awake()
         {
-            inputHandler = GetComponent<InputHandler>();
+            inputHandler = GetComponent<RTSUnitInputHandler>();
         }
 
         private void OnEnable()
