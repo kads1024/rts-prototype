@@ -5,14 +5,13 @@ using UnityEngine.Events;
 
 namespace RTS.Input
 {
-    
     public class RTSUnitInputHandler : MonoBehaviour
     {
         [SerializeField] private InputSetting inputSetting;
         public UnityAction OnMovementKeyPressed;
 
         [SerializeField] private LayerMask movementLayer;
-
+        
         private Camera mainCamera;
 
         private void Awake()
@@ -30,11 +29,13 @@ namespace RTS.Input
             if (UnityEngine.Input.GetKeyDown(inputSetting.MovementKey))
             {
                 Ray ray = mainCamera.ScreenPointToRay(UnityEngine.Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, movementLayer))
+                if (Physics.Raycast(ray, out var hit, Mathf.Infinity))
                 {
-                    Debug.Log(hit.collider.gameObject.layer);
-                    OnMovementKeyPressed.Invoke();
+                    // Bit shift to get the correct layer value
+                    int mouseHitLayer = 1 << hit.collider.gameObject.layer;
+                     
+                    if(mouseHitLayer == movementLayer) 
+                       OnMovementKeyPressed.Invoke();
                 }
             }
         }
