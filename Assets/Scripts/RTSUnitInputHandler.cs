@@ -8,7 +8,7 @@ namespace RTS.Input
     public class RTSUnitInputHandler : MonoBehaviour
     {
         [SerializeField] private InputSetting inputSetting;
-        public UnityAction OnMovementKeyPressed;
+        public UnityAction<Vector3> OnMovementKeyPressed;
 
         [SerializeField] private LayerMask movementLayer;
         
@@ -35,7 +35,7 @@ namespace RTS.Input
                     int mouseHitLayer = 1 << hit.collider.gameObject.layer;
                      
                     if(mouseHitLayer == movementLayer) 
-                       OnMovementKeyPressed.Invoke();
+                       OnMovementKeyPressed.Invoke(hit.point);
                 }
             }
         }
