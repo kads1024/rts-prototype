@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: DefaultInputSettings
   m_EditorClassIdentifier: 
   movementKey: 324
+  abilityKeys: 71000000770000006500000072000000

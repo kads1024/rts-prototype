@@ -6,32 +6,39 @@ using UnityEngine.AI;
 
 namespace RTS.General
 {
-    [RequireComponent(typeof(RTSUnitInputHandler), typeof(NavMeshAgent))]
+    [RequireComponent(typeof(NavMeshAgent))]
     public class UnitMovement : MonoBehaviour
     {
-        private RTSUnitInputHandler inputHandler;
-        private NavMeshAgent navMeshAgent;
+        [SerializeField] private InputSetting inputSetting;
+        [SerializeField] private LayerMask movementLayer;
         
+        private Camera mainCamera;
+        private NavMeshAgent navMeshAgent;
         private void Awake()
         {
-            inputHandler = GetComponent<RTSUnitInputHandler>();
             navMeshAgent = GetComponent<NavMeshAgent>();
+            mainCamera = Camera.main;
         }
 
-        private void OnEnable()
+        private void Update()
         {
-            inputHandler.OnMovementKeyPressed += MoveUnit;
-        }
-        
-        private void OnDisable()
-        {
-            inputHandler.OnMovementKeyPressed -= MoveUnit;
+            HandleRtsMovement();
         }
 
-        private void MoveUnit(Vector3 destination)
+        private void HandleRtsMovement()
         {
-            Debug.Log("MOVING UNIT...");
-            navMeshAgent.SetDestination(destination);
+            if (UnityEngine.Input.GetKeyDown(inputSetting.MovementKey))
+            {
+                Ray ray = mainCamera.ScreenPointToRay(UnityEngine.Input.mousePosition);
+                if (Physics.Raycast(ray, out var hit, Mathf.Infinity))
+                {
+                    // Bit shift to get the correct layer value
+                    int mouseHitLayer = 1 << hit.collider.gameObject.layer;
+                     
+                    if(mouseHitLayer == movementLayer) 
+                        navMeshAgent.SetDestination(hit.point);
+                }
+            }
         }
     }
 }

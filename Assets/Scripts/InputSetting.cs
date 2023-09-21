@@ -10,5 +10,11 @@ namespace RTS.Input
     {
        [SerializeField] private KeyCode movementKey;
        public KeyCode MovementKey => movementKey;
+       
+       [SerializeField] private KeyCode[] abilityKeys;
+       public KeyCode[] AbilityKeys => abilityKeys;
+       
+       
+       
     }
 }
